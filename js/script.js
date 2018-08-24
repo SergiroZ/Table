@@ -50,9 +50,9 @@ window.onload = function () {
     document.body.appendChild(bodyBlockAdd);
     document.body.appendChild(bodyBlock);
 
-    function getSubTotal(rows, columns) {
+    function getSubTotal(rows, col) {
 
-        const matrixWith = columns;
+        const matrixWith = col;
         const matrixHeight = rows;
 
         let sumCol = [];
@@ -75,16 +75,18 @@ window.onload = function () {
 
         }
         table.appendChild(tr);
-    }
 
-    function getTotalSum(sumCol, matrixWith) {
-        let totalSum = 0;
+        function getTotalSum(sumCol, matrixWith) {
+            let totalSum = 0;
 
-        for (let j = 0; j < matrixWith; j++) {
-            totalSum += sumCol[j];
+            for (let j = 0; j < matrixWith; j++) {
+                totalSum += sumCol[j];
+            }
+            return totalSum;
         }
-        return totalSum;
     }
+
+
 
     function addRowFun() {
         console.log('-- addRowFun ');
@@ -163,7 +165,7 @@ window.onload = function () {
 
     function matrixArray(rows, columns) {
         const arr = [];
-        for (i = 0; i < rows; i++) {
+        for (let i = 0; i < rows; i++) {
             arr[i] = [];
             for (let j = 0; j < columns; j++) {
                 arr[i][j] = 0;
