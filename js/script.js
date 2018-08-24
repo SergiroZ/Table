@@ -2,7 +2,7 @@
 window.onload = function () {
 
     const n = randomInteger(3, 10);
-    let matrixArray = initArray(n, n), i = 0, sum = 0;
+    let matrixArray = initArray(n, n), sum = 0;
 
     const titleTable = createDomElement('div', 'tableTitle tableStyle', 'Случайная матрица.');
 
@@ -22,6 +22,7 @@ window.onload = function () {
 
     getInitial(n, n);
 
+
     bodyBlockRes.appendChild(res);
     bodyBlockAdd.appendChild(addCol);
     bodyBlockAdd.appendChild(addRow);
@@ -34,7 +35,7 @@ window.onload = function () {
     document.body.appendChild(bodyBlock);
 
     function getInitial(matrixHeight, matrixWith) {
-        for (i = 0; i < matrixHeight; i++) {
+        for (let i = 0; i < matrixHeight; i++) {
             const tr = createDomElement('tr');
             let sumRow = 0;
             for (let j = 0; j < matrixWith; j++) {
@@ -52,15 +53,19 @@ window.onload = function () {
 
     function getSubTotal(matrixHeight, matrixWith) {
         let sumColumn = [];
-        for (i = 0; i < matrixHeight; i++) {
+        for (let i = 0; i < matrixHeight; i++) {
             sumColumn[i] = 0;
         }
-        for (i = 0; i < matrixHeight; i++) {
+        for (let i = 0; i < matrixHeight; i++) {
             for (let j = 0; j < matrixWith; j++) {
                 sumColumn[j] += matrixArray[i][j];
             }
         }
-        sumColumn[matrixWith] = getTotalSum(sumColumn);
+
+        console.log(matrixWith);
+        sumColumn[matrixWith] = getTotalSum(sumColumn, matrixWith);
+        console.log(sumColumn);
+
         const tr = createDomElement('tr');
         for (let j = 0; j < matrixWith + 1; j++) {
             const td = createDomElement('td', 'tableRes', sumColumn[j]);
@@ -69,12 +74,16 @@ window.onload = function () {
         }
         table.appendChild(tr);
 
-        function getTotalSum(sumColumn) {
-            const matrixWith = document.querySelectorAll('.tableSum tr:first-child td').length;
+
+        function getTotalSum(sumColumn, matrixWith) {
+            let matWith = document.querySelectorAll('.tableSum tr:first-child td').length;
+            matWith = (matWith == 0) ? matrixWith : matWith;
 
             let totalSum = 0;
 
-            for (let j = 0; j < matrixWith; j++) {
+            console.log(matWith);
+
+            for (let j = 0; j < matWith; j++) {
                 totalSum += sumColumn[j];
             }
             return totalSum;
