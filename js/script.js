@@ -2,7 +2,7 @@
 window.onload = function () {
 
     const n = randomInteger(3, 10);
-    let resultArray = matrixArray(n, n);
+    let matrixArray = initArray(n, n), i = 0, sum = 0;
 
     const titleTable = createDomElement('div', 'tableTitle tableStyle', 'Случайная матрица.');
 
@@ -12,32 +12,15 @@ window.onload = function () {
     const addRow = createDomElement('button', 'st', 'новая\nстрока', 'click', addRowFun);
 
     const res = createDomElement('div', 'tableTitle tableStyle', 'Сумма не определена...');
+    res.id = "show";
 
     const bodyBlockRes = createDomElement('div', 'flex-container container-justify', '');
     const bodyBlockAdd = createDomElement('div', 'flex-container container-justify', '');
     const bodyBlock = createDomElement('div', 'flex-container container-justify', '');
-
     const blockTable = createDomElement('div', 'tableStyle', '');
-    res.id = "show";
 
-    let i = 0, sum = 0;
 
-    for (i = 0; i < n; i++) {
-        const tr = createDomElement('tr');
-        let sumRow = 0;
-        for (let j = 0; j < n; j++) {
-            const val = resultArray[i][j] = randomInteger(-20, 20);
-            sumRow += val;
-            const td = createDomElement('td', '', val, 'click', checkTd);
-            tr.appendChild(td);
-        }
-        const td = createDomElement('td', 'tableRes', sumRow);
-        tr.appendChild(td);
-        table.appendChild(tr);
-    }
-
-    getSubTotal(n, n);
-
+    getInitial(n, n);
 
     bodyBlockRes.appendChild(res);
     bodyBlockAdd.appendChild(addCol);
@@ -50,20 +33,34 @@ window.onload = function () {
     document.body.appendChild(bodyBlockAdd);
     document.body.appendChild(bodyBlock);
 
+    function getInitial(matrixHeight, matrixWith) {
+        for (i = 0; i < matrixHeight; i++) {
+            const tr = createDomElement('tr');
+            let sumRow = 0;
+            for (let j = 0; j < matrixWith; j++) {
+                const val = matrixArray[i][j] = randomInteger(-20, 20);
+                sumRow += val;
+                const td = createDomElement('td', '', val, 'click', checkTd);
+                tr.appendChild(td);
+            }
+            const td = createDomElement('td', 'tableRes', sumRow);
+            tr.appendChild(td);
+            table.appendChild(tr);
+        }
+        getSubTotal(matrixHeight, matrixWith);
+    }
+
     function getSubTotal(matrixHeight, matrixWith) {
         let sumColumn = [];
         for (i = 0; i < matrixHeight; i++) {
             sumColumn[i] = 0;
         }
-
         for (i = 0; i < matrixHeight; i++) {
             for (let j = 0; j < matrixWith; j++) {
-                sumColumn[j] += resultArray[i][j];
+                sumColumn[j] += matrixArray[i][j];
             }
         }
-
         sumColumn[matrixWith] = getTotalSum(sumColumn);
-
         const tr = createDomElement('tr');
         for (let j = 0; j < matrixWith + 1; j++) {
             const td = createDomElement('td', 'tableRes', sumColumn[j]);
@@ -101,7 +98,7 @@ window.onload = function () {
             const td = createDomElement('td', '', val, 'click', checkTd);
             tr.appendChild(td);
         }
-        resultArray.push(tmp);
+        matrixArray.push(tmp);
         const td = createDomElement('td', 'tableRes', sumRow);
         tr.appendChild(td);
         table.appendChild(tr);
@@ -157,7 +154,7 @@ window.onload = function () {
 
     }
 
-    function matrixArray(rows, columns) {
+    function initArray(rows, columns) {
         const arr = [];
         for (let i = 0; i < rows; i++) {
             arr[i] = [];
