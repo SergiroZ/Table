@@ -50,42 +50,39 @@ window.onload = function () {
     document.body.appendChild(bodyBlockAdd);
     document.body.appendChild(bodyBlock);
 
-    function getSubTotal(rows, col) {
-
-        const matrixWith = col;
-        const matrixHeight = rows;
-
-        let sumCol = [];
+    function getSubTotal(matrixHeight, matrixWith) {
+        let sumColumn = [];
         for (i = 0; i < matrixHeight; i++) {
-            sumCol[i] = 0;
+            sumColumn[i] = 0;
         }
 
         for (i = 0; i < matrixHeight; i++) {
             for (let j = 0; j < matrixWith; j++) {
-                sumCol[j] += resultArray[i][j];
+                sumColumn[j] += resultArray[i][j];
             }
         }
 
-        sumCol[matrixWith] = getTotalSum(sumCol, matrixWith);
+        sumColumn[matrixWith] = getTotalSum(sumColumn);
 
         const tr = createDomElement('tr');
         for (let j = 0; j < matrixWith + 1; j++) {
-            const td = createDomElement('td', 'tableRes', sumCol[j]);
+            const td = createDomElement('td', 'tableRes', sumColumn[j]);
             tr.appendChild(td);
 
         }
         table.appendChild(tr);
 
-        function getTotalSum(sumCol, matrixWith) {
+        function getTotalSum(sumColumn) {
+            const matrixWith = document.querySelectorAll('.tableSum tr:first-child td').length;
+
             let totalSum = 0;
 
             for (let j = 0; j < matrixWith; j++) {
-                totalSum += sumCol[j];
+                totalSum += sumColumn[j];
             }
             return totalSum;
         }
     }
-
 
 
     function addRowFun() {
@@ -95,12 +92,9 @@ window.onload = function () {
         const matrixHeight = document.querySelectorAll('.tableSum tr').length;
         table.deleteRow(matrixHeight - 1);
 
-        console.log(n);
+        console.log(matrixHeight);
         const tr = createDomElement('tr');
-        let sumRow = 0;
-
-
-        let tmp = [];
+        let sumRow = 0, tmp = [];
         for (let j = 0; j < matrixWith - 1; j++) {
             const val = tmp[j] = randomInteger(-20, 20);
             sumRow += val;
@@ -112,7 +106,7 @@ window.onload = function () {
         tr.appendChild(td);
         table.appendChild(tr);
 
-        getSubTotal(matrixHeight, matrixWith);
+        getSubTotal(matrixHeight, matrixWith - 1);
     }
 
     function addColFun() {
