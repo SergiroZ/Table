@@ -3,7 +3,6 @@ window.onload = function () {
 
     const n = randomInteger(3, 10);
     let resultArray = matrixArray(n, n);
-    let totalSum = 0;
 
     const titleTable = createDomElement('div', 'tableTitle tableStyle', 'Случайная матрица.');
 
@@ -51,9 +50,9 @@ window.onload = function () {
     document.body.appendChild(bodyBlockAdd);
     document.body.appendChild(bodyBlock);
 
-    function getSubTotal(rows, cols) {
+    function getSubTotal(rows, columns) {
 
-        const matrixWith = cols;
+        const matrixWith = columns;
         const matrixHeight = rows;
 
         let sumCol = [];
@@ -67,8 +66,10 @@ window.onload = function () {
             }
         }
 
+        sumCol[matrixWith] = getTotalSum(sumCol, matrixWith);
+
         const tr = createDomElement('tr');
-        for (let j = 0; j < matrixWith; j++) {
+        for (let j = 0; j < matrixWith + 1; j++) {
             const td = createDomElement('td', 'tableRes', sumCol[j]);
             tr.appendChild(td);
 
@@ -76,7 +77,12 @@ window.onload = function () {
         table.appendChild(tr);
     }
 
-    function getTotalSum() {
+    function getTotalSum(sumCol, matrixWith) {
+        let totalSum = 0;
+
+        for (let j = 0; j < matrixWith; j++) {
+            totalSum += sumCol[j];
+        }
         return totalSum;
     }
 
@@ -157,7 +163,7 @@ window.onload = function () {
 
     function matrixArray(rows, columns) {
         const arr = [];
-        for (let i = 0; i < rows; i++) {
+        for (i = 0; i < rows; i++) {
             arr[i] = [];
             for (let j = 0; j < columns; j++) {
                 arr[i][j] = 0;
