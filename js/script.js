@@ -5,23 +5,17 @@ window.onload = function () {
     let matrixArray = initArray(n, n), sum = 0;
 
     const titleTable = createDomElement('div', 'tableTitle tableStyle', 'Случайная матрица.');
-
     const table = createDomElement('table', 'tableSum');
-
     const addCol = createDomElement('button', 'st', 'новый\nстолбец', 'click', addColFun);
     const addRow = createDomElement('button', 'st', 'новая\nстрока', 'click', addRowFun);
-
     const res = createDomElement('div', 'tableTitle tableStyle', 'Сумма не определена...');
-    res.id = "show";
-
     const bodyBlockRes = createDomElement('div', 'flex-container container-justify', '');
     const bodyBlockAdd = createDomElement('div', 'flex-container container-justify', '');
     const bodyBlock = createDomElement('div', 'flex-container container-justify', '');
     const blockTable = createDomElement('div', 'tableStyle', '');
-
+    res.id = "show";
 
     getInitial(n, n);
-
 
     bodyBlockRes.appendChild(res);
     bodyBlockAdd.appendChild(addCol);
@@ -62,9 +56,9 @@ window.onload = function () {
             }
         }
 
-        console.log(matrixWith);
+        //console.log(matrixWith);
         sumColumn[matrixWith] = getTotalSum(sumColumn, matrixWith);
-        console.log(sumColumn);
+        //console.log(sumColumn);
 
         const tr = createDomElement('tr');
         for (let j = 0; j < matrixWith + 1; j++) {
@@ -81,7 +75,7 @@ window.onload = function () {
 
             let totalSum = 0;
 
-            console.log(matWith);
+            //console.log(matWith);
 
             for (let j = 0; j < matWith; j++) {
                 totalSum += sumColumn[j];
@@ -89,7 +83,6 @@ window.onload = function () {
             return totalSum;
         }
     }
-
 
     function addRowFun() {
         console.log('-- addRowFun ');
@@ -119,7 +112,7 @@ window.onload = function () {
         console.log('-- addColFun ');
         const allTr = document.querySelectorAll('.tableSum tr');
 
-        for (i = 0; i < allTr.length; i++) {
+        for (let i = 0; i < allTr.length; i++) {
             //const td = createDomElement('td', "", randomInteger(-20, 20), 'click', checkTd);
             const td = createDomElement('td', "", 5, 'click', checkTd);
             allTr[i].appendChild(td);
