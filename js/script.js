@@ -31,8 +31,6 @@ window.onload = function () {
     function getInitial(matrixHeight, matrixWith) {
         console.log('-- getInitial ');
 
-        console.log('matrixHeight = ', matrixHeight, '  matrixWith =', matrixWith);
-
         for (let i = 0; i < matrixHeight; i++) {
             const tr = createDomElement('tr');
             let localSumRow = 0;
@@ -50,19 +48,21 @@ window.onload = function () {
         getSubTotal(matrixHeight, matrixWith);
     }
 
+    //добавляем итоги по столбцам
     function getSubTotal(matrixHeight, matrixWith) {
-
         let sumColumn = [];
-        for (let i = 0; i < matrixHeight; i++) {
-            sumColumn[i] = 0;
+
+        for (let j = 0; j < matrixWith; j++) {
+            sumColumn[j] = 0;
         }
+
         for (let i = 0; i < matrixHeight; i++) {
             for (let j = 0; j < matrixWith; j++) {
                 sumColumn[j] += matrixArray[i][j];
             }
         }
 
-        sumColumn[matrixWith] = getTotalSum(sumColumn, matrixWith);
+        sumColumn[matrixWith] = getTotalSum(sumColumn);
 
         const tr = createDomElement('tr');
         for (let j = 0; j < matrixWith + 1; j++) {
@@ -72,18 +72,11 @@ window.onload = function () {
         }
         table.appendChild(tr);
 
-
-        function getTotalSum(sumColumn, matrixWith) {
-
-            let matWith = document.querySelectorAll('.tableSum tr:first-child td').length;
-            matWith = (matWith === 0) ? matrixWith : matWith;
-
+        function getTotalSum(sumColumn) {
             let totalSum = 0;
-
-            //console.log(matWith);
-
-            for (let j = 0; j < matWith; j++) {
-                totalSum += sumColumn[j];
+            const matWith = sumColumn.length;
+            for (let i = 0; i < matWith; i++) {
+                totalSum += sumColumn[i];
             }
             return totalSum;
         }
@@ -94,9 +87,7 @@ window.onload = function () {
 
         const matrixWith = document.querySelectorAll('.tableSum tr:first-child td').length;
         const matrixHeight = document.querySelectorAll('.tableSum tr').length;
-        table.deleteRow(matrixHeight - 1);
-
-        //console.log('matrixHeight = ', matrixHeight, '  matrixWith =', matrixWith);
+        table.deleteRow(matrixHeight - 1); //удаляем устаревшие итоги по столбцам
 
         const tr = createDomElement('tr');
         let localSumRow = 0, tmp = [];
@@ -112,7 +103,7 @@ window.onload = function () {
         tr.appendChild(td);
         table.appendChild(tr);
 
-        getSubTotal(matrixHeight, matrixWith - 1);
+        getSubTotal(matrixHeight, matrixWith - 1); //добавляем итоги по столбцам
     }
 
     function addColFun() {
@@ -120,13 +111,8 @@ window.onload = function () {
 
         let matrixHeight = document.querySelectorAll('.tableSum tr');
         let mtrHeight = matrixHeight.length;
-        let matrixWith = document.querySelectorAll('.tableSum tr:first-child td').length;
-
+        let mtrWith = document.querySelectorAll('.tableSum tr:first-child td').length;
         let rows = document.getElementsByClassName('tableSum')[0].getElementsByTagName('tr');
-        // console.log(matrixHeight.length);
-        // console.log(rows);
-
-        console.log('matrixHeight = ', matrixHeight.length, '  matrixWith =', matrixWith);
 
         delColumn(mtrHeight--);
 
@@ -146,51 +132,8 @@ window.onload = function () {
             const tdRes = createDomElement('td', 'tableRes', sumRowArr[i]);
             matrixHeight[i].appendChild(tdRes);
         }
-
-        //getSubTotal(matrixHeight.length, matrixWith-1);
-        //************************************************
-        table.deleteRow(matrixHeight.length - 1);
-
-        let sumColumn = [];
-        for (let i = 0; i < matrixWith; i++) {
-            sumColumn[i] = 0;
-        }
-
-        matrixWith = document.querySelectorAll('.tableSum tr:first-child td').length;
-        console.log("matrixWith = ", matrixWith);
-
-        for (let i = 0; i < matrixHeight.length - 1; i++) {
-            for (let j = 0; j < matrixWith - 1; j++) {
-                sumColumn[j] += matrixArray[i][j];
-            }
-        }
-        console.log("sumColumn = ", sumColumn);
-
-        sumColumn[matrixWith - 1] = getTotalSum(sumColumn);
-        console.log("sumColumn ++ = ", sumColumn);
-
-        const tr = createDomElement('tr');
-        for (let j = 0; j < matrixWith; j++) {
-            const td = createDomElement('td', 'tableRes', sumColumn[j]);
-            tr.appendChild(td);
-
-        }
-        table.appendChild(tr);
-
-
-        function getTotalSum(sumColumn) {
-            let totalSum = 0;
-            for (let i = 0; i < sumColumn.length; i++) {
-                totalSum += sumColumn[i];
-            }
-            return totalSum;
-        }
-
-        //************************************************
-
-
-        console.log('-->>matrixHeight = ', matrixHeight.length, '  matrixWith =', matrixWith);
-
+        table.deleteRow(mtrHeight); //удаляем устаревшие итоги по столбцам
+        getSubTotal(mtrHeight, mtrWith); //добавляем итоги по столбцам
 
         function delColumn(matHeight) {
             for (let i = 0; i < matHeight; i++)  //проходим строки таблицы
@@ -204,11 +147,11 @@ window.onload = function () {
 
     function createDomElement(elem, className = "", text = "", eventType = "", eventFun) {
         const newElem = document.createElement(elem);
-        if (className != "") {
+        if (className !== "") {
             newElem.className = className;
         }
 
-        if (eventType != "") {
+        if (eventType !== "") {
             newElem.addEventListener(eventType, eventFun);
         }
 
